@@ -10,7 +10,9 @@
 {:then events}
 	{#each events as event}
 		<div class="flex flex-col gap-1 max-w-md m-8">
-			<h2 class="text-lg font-bold">{event.id}: {event.title}</h2>
+			<a href={`/${event.id}`} class="text-inherit no-underline hover:no-underline">
+				<h2 class="text-lg font-bold">{event.id}: {event.title}</h2>
+			</a>
 			<p>{event.description}</p>
 			<p>{event.date}</p>
 		</div>

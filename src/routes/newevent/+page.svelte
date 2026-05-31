@@ -55,7 +55,6 @@
 		class="btn flex items-center justify-center gap-2 disabled:opacity-60"
 	>
 		{#if isSubmitting}
-			<!-- Inline SVG spinner — no extra dependency needed -->
 			<svg
 				class="animate-spin h-4 w-4"
 				xmlns="http://www.w3.org/2000/svg"
