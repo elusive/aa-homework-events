@@ -72,7 +72,7 @@
 				<button
 					type="submit"
 					disabled={isSubmitting}
-					class="btn flex items-center justify-center gap-2 disabled:opacity-60"
+					class="btn btn-sm btn-success flex items-center justify-center gap-2 disabled:opacity-60"
 				>
 					{#if isSubmitting}
 						<svg
@@ -94,7 +94,7 @@
 					type="button"
 					disabled={isSubmitting}
 					onclick={() => isEditing = false}
-					class="btn flex items-center justify-center gap-2 disabled:opacity-60"
+					class="btn btn-error btn-sm flex items-center justify-center gap-2 disabled:opacity-60"
 				>
 					Cancel
 				</button>
@@ -138,4 +138,4 @@
 		{/if}
 	{/if}
 </div>
-<a class="btn m-4 mt-1" href="/" role="button">All Events</a>
+<a class="btn btn-primary m-4 mt-1" href="/" role="button">All Events</a>

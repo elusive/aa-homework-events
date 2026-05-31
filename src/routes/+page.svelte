@@ -20,4 +20,4 @@
 {:catch error}
 	<p class="text-red-500">Failed to load events: {error.message}</p>
 {/await}
-<a class="btn m-4" href="/newevent" role="button">Add Event</a>
+<a class="btn btn-primary m-4" href="/newevent" role="button">Add Event</a>
