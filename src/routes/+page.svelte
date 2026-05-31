@@ -8,15 +8,19 @@
 {#await data.events}
 	<p class="text-gray-500 animate-pulse m-8">Loading events…</p>
 {:then events}
-	{#each events as event}
-		<div class="flex flex-col gap-1 max-w-md m-8">
-			<a href={`/${event.id}`} class="text-inherit no-underline hover:no-underline">
-				<h2 class="text-lg font-bold">{event.id}: {event.title}</h2>
-			</a>
-			<p>{event.description}</p>
-			<p>{event.date}</p>
-		</div>
-	{/each}
+	{#if events.length > 0}
+		{#each events as event}
+			<div class="flex flex-col gap-1 max-w-md m-8">
+				<a href={`/${event.id}`} class="text-inherit no-underline hover:no-underline">
+					<h2 class="text-lg font-bold">{event.id}: {event.title}</h2>
+				</a>
+				<p>{event.description}</p>
+				<p>{event.date}</p>
+			</div>
+		{/each}
+	{:else}
+		<h5 class="text-md m-8">No events have been created.</h5>
+	{/if}
 {:catch error}
 	<p class="text-red-500">Failed to load events: {error.message}</p>
 {/await}

@@ -13,9 +13,11 @@
 	method="POST"
 	use:enhance={() => {
 		isSubmitting = true;
-		return async ({ update }) => {
+		return async ({ result, update }) => {
+			if (result.type !== 'redirect') {
+				isSubmitting = false; // Reset only for success/failure
+			}
 			await update();
-			isSubmitting = false;
 		};
 	}}
 	class="flex flex-col gap-4 max-w-md m-8"
@@ -69,16 +71,7 @@
 			class="btn btn-success flex items-center justify-center gap-2 disabled:opacity-60"
 		>
 			{#if isSubmitting}
-				<svg
-					class="animate-spin h-4 w-4"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 24 24"
-					aria-hidden="true"
-				>
-					<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-					<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
-				</svg>
+				<span class="loading loading-spinner loading-xs"></span>
 				Submitting…
 			{:else}
 				Submit Event
