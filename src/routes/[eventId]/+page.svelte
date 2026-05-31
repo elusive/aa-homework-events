@@ -7,6 +7,7 @@
 
 	let isSubmitting = $state(false);
 	let isEditing = $state(false);
+	let showDeleteConfirmation = $state(false);
 </script>
 
 <div class="flex flex-col gap-1 max-w-md m-8">
@@ -75,16 +76,7 @@
 					class="btn btn-sm btn-success flex items-center justify-center gap-2 disabled:opacity-60"
 				>
 					{#if isSubmitting}
-						<svg
-							class="animate-spin h-4 w-4"
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							aria-hidden="true"
-						>
-							<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-							<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
-						</svg>
+						<span class="loading loading-spinner loading-xs"></span>
 						Saving…
 					{:else}
 						Save Changes
@@ -104,36 +96,45 @@
 			<p>{data.event.description}</p>
 			<p>{data.event.date}</p>
 			<div class="flex gap-2 mt-2">
-	            <button onclick={() => isEditing = true} class="btn btn-sm">Edit</button>
-	            <form
-	            	method="POST"
-	            	action="?/delete"
-	            	use:enhance={() => {
+	            <button onclick={() => isEditing = true} class="btn btn-sm">Edit</button>       	            
+				<form
+					method="POST"
+					action="?/delete"
+					use:enhance={() => {
 						isSubmitting = true;
-	            	 	return async ({update}) => {
+					 	return async ({update}) => {
 							await update();
 							isSubmitting = false;
-	            	 	};
-	            	 }}
-	            >
-	                <button type="submit" class="btn btn-sm btn-error" disabled={isSubmitting}>
-						{#if isSubmitting}
-							<svg
-								class="animate-spin h-4 w-4"
-								xmlns="http://www.w3.org/2000/svg"
-								fill="none"
-								viewBox="0 0 24 24"
-								aria-hidden="true"
-							>
-								<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-								<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
-							</svg>
-							Deleting…
-						{:else}
+					 	};
+					 }}>
+					<div class="relative">
+						<button
+							type="button"
+							class="absolute btn btn-sm btn-error"
+							class:w-[14rem]={showDeleteConfirmation}
+							disabled={isSubmitting || showDeleteConfirmation}
+							onclick={() => (showDeleteConfirmation = true)}>
 							Delete
+						</button>
+						{#if showDeleteConfirmation}
+							<div class="absolute flex items-center gap-2 p-1 z-10">
+								<p class="text-white text-sm mr-2">Sure?</p>
+								<button type="submit" class="btn btn-xs btn-error">
+									{#if isSubmitting}
+										<span class="loading loading-spinner loading-xs"></span>
+										Deleting…
+									{:else}
+										Yes, Delete
+									{/if}
+								</button>
+								<button type="button" class="btn btn-xs btn-ghost" onclick={() => showDeleteConfirmation=false}>
+									Cancel
+								</button>
+							</div>
 						{/if}
-					</button>
-	            </form>
+	
+					</div>
+				</form>
 	        </div>
 		{/if}
 	{/if}
