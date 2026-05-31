@@ -13,9 +13,11 @@
 	method="POST"
 	use:enhance={() => {
 		isSubmitting = true;
-		return async ({ update }) => {
+		return async ({ result, update }) => {
+			if (result.type !== 'redirect') {
+				isSubmitting = false; // Reset only for success/failure
+			}
 			await update();
-			isSubmitting = false;
 		};
 	}}
 	class="flex flex-col gap-4 max-w-md m-8"
