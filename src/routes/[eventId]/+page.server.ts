@@ -1,5 +1,5 @@
 import { fetchEventById, updateEventById, deleteEventById } from "$lib/server/remote-events";
-import { error, redirect } from "@sveltejs/kit";
+import { error, fail, redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({params}) => {
@@ -17,8 +17,25 @@ export const actions: Actions = {
         const title = posted.get('title')?.toString();
         const description = posted.get('description')?.toString();
         const date = posted.get('date')?.toString();
+
+        // check required vals
         if (!title || !date) {
-            error(400, 'Title and Date are required to update an event');
+            return fail(400, {
+                message: 'Title and Date are required to update an event.',
+                title,
+                description,
+                date
+            });
+        }
+
+        // check date is not in past
+        if (new Date(date) < new Date()) {
+            return fail(400, {
+                message: 'Event date cannot be in the past.',
+                title,
+                description,
+                date
+            });
         }
 
         const updates = {

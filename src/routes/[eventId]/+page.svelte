@@ -1,8 +1,9 @@
 <script lang="ts">
-	import type { PageData } from "./$types";
-	import { enhance } from "$app/forms";
+	import type { PageData } from './$types';
+	import { enhance } from '$app/forms';
+	import { nowAsDatetimeLocal } from '$lib/utils/date';
 
-	let { data }: { data: PageData } = $props();
+	let { data, form }: { data: PageData, form: ActionData } = $props();
 
 	let isSubmitting = $state(false);
 	let isEditing = $state(false);
@@ -12,15 +13,21 @@
 	{#if data.event}
 		{#if isEditing}
 			<h2 class="text-lg font-bold">Edit Event</h2>
+			{#if form?.message}
+				<p class="text-red-600 text-sm font-medium">
+					{form.message}
+				</p>
+			{/if}
 			<form
 				method="POST"
 				action="?/update"
 				use:enhance={() => {
 					isSubmitting = true;
-					return async ({ update }) => {
+					return async ({ result, update }) => {
 						await update();
 						isSubmitting = false;
-						isEditing = false;
+						isEditing = (result.type === 'failure');
+						console.log(isEditing, result);
 					};
 				}}
 				class="flex flex-col gap-4 max-w-md m-8"
@@ -31,7 +38,7 @@
 					<input
 						name="title"
 						type="text"
-						value={data.event.title}
+						value={form?.title ?? data.event.title}
 						required
 						class="border rounded px-3 py-2"
 						disabled={isSubmitting}
@@ -42,7 +49,7 @@
 					<span class="font-medium">Description</span>
 					<textarea
 						name="description"
-						value={data.event.description}
+						value={form?.description ?? data.event.description}
 						required
 						class="border rounded px-3 py-2"
 						rows="3"
@@ -54,7 +61,8 @@
 					<input
 						name="date"
 						type="datetime-local"
-						value={data.event.date}
+						value={form?.date ?? data.event.date}
+						min={nowAsDatetimeLocal()}
 						required
 						class="border rounded px-3 py-2"
 						disabled={isSubmitting}
