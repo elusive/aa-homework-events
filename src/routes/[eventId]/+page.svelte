@@ -114,12 +114,12 @@
 							class:w-[14rem]={showDeleteConfirmation}
 							disabled={isSubmitting || showDeleteConfirmation}
 							onclick={() => (showDeleteConfirmation = true)}>
-							Delete
+							{showDeleteConfirmation ? '' : 'Delete'}
 						</button>
 						{#if showDeleteConfirmation}
 							<div class="absolute flex items-center gap-2 p-1 z-10">
 								<p class="text-white text-sm mr-2">Sure?</p>
-								<button type="submit" class="btn btn-xs btn-error">
+								<button type="submit" class="btn btn-xs btn-error" disabled={isSubmitting}>
 									{#if isSubmitting}
 										<span class="loading loading-spinner loading-xs"></span>
 										Deleting…
