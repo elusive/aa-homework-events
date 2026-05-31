@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { enhance } from '$app/forms';
 	import { nowAsDatetimeLocal } from '$lib/utils/date';
 	
@@ -61,25 +62,35 @@
 			disabled={isSubmitting}
 		/>
 	</label>
-	<button
-		type="submit"
-		disabled={isSubmitting}
-		class="btn flex items-center justify-center gap-2 disabled:opacity-60"
-	>
-		{#if isSubmitting}
-			<svg
-				class="animate-spin h-4 w-4"
-				xmlns="http://www.w3.org/2000/svg"
-				fill="none"
-				viewBox="0 0 24 24"
-				aria-hidden="true"
-			>
-				<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-				<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
-			</svg>
-			Submitting…
-		{:else}
-			Submit Event
-		{/if}
-	</button>
+	<div class="flex flex-row gap-2">
+		<button
+			type="submit"
+			disabled={isSubmitting}
+			class="btn btn-success flex items-center justify-center gap-2 disabled:opacity-60"
+		>
+			{#if isSubmitting}
+				<svg
+					class="animate-spin h-4 w-4"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+					<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+				</svg>
+				Submitting…
+			{:else}
+				Submit Event
+			{/if}
+		</button>
+		<button
+			type="button"
+			disabled={isSubmitting}
+			onclick={() => goto('/')}
+			class="btn btn-error flex items-center justify-center gap-2 disabled:opacity-60"
+		>
+			Cancel
+		</button>
+	</div>
 </form>
