@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-
+	import { nowAsDatetimeLocal } from '$lib/utils/date';
+	
+	let { form }: { form: ActionData } = $props();
 	let isSubmitting = $state(false);
 </script>
 
@@ -17,12 +19,19 @@
 	}}
 	class="flex flex-col gap-4 max-w-md m-8"
 >
-	<!-- form for creating new event -->
+
+	{#if form?.message}
+		<p class="text-red-600 text-sm font-medium">
+			{form.message}
+		</p>
+	{/if}
+	
 	<label class="flex flex-col gap-1">
 		<span class="font-medium">Title</span>
 		<input
 			name="title"
 			type="text"
+			value={form?.title ?? ''}
 			required
 			class="border rounded px-3 py-2"
 			disabled={isSubmitting}
@@ -33,6 +42,7 @@
 		<span class="font-medium">Description</span>
 		<textarea
 			name="description"
+			value={form?.description ?? ''}
 			required
 			class="border rounded px-3 py-2"
 			rows="3"
@@ -44,6 +54,8 @@
 		<input
 			name="date"
 			type="datetime-local"
+			value={form?.date ?? ''}
+			min={nowAsDatetimeLocal()}
 			required
 			class="border rounded px-3 py-2"
 			disabled={isSubmitting}
